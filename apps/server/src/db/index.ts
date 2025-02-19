@@ -1,12 +1,8 @@
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres"; 
-import { z } from "zod";
+import { drizzle } from "drizzle-orm/neon-http";
+import { neon } from "@neondatabase/serverless";
+import { config } from "dotenv";
 
-const PostgresEnv = z.object({
-  DATABASE_URL: z.string().url(),
-});
-const ProcessEnv = PostgresEnv.parse(process.env);
+config({ path: ".env" }); // or .env.local
 
-// for query purposes
-const queryClient = postgres(ProcessEnv.DATABASE_URL);
-export const db = drizzle(queryClient, {logger: true});
+const sql = neon(process.env.DATABASE_URL!);
+export const db = drizzle({ client: sql });

@@ -1,6 +1,10 @@
 import { Hono } from "hono";
 import { db } from "../db";
-import {courses as coursesTable,} from "../db/schema";
+import {courses_table as coursesTable, insertCourseSchema} from "../db/schema";
+import { zValidator } from "@hono/zod-validator";
+import { createCourse } from "../queries/insert";
+import { getCourseByID, getCourseByTitle } from "../queries/select";
+import { deleteCourseById, deleteCourseByTitle } from "../queries/delete";
 
 export const courses_route = new Hono()
   .get("/", async (c) => {
@@ -11,16 +15,53 @@ export const courses_route = new Hono()
 
     return c.json({ courses: courses });
   })
- 
-  .post("/", async (c) => {
-  const course = await c.req.json();
+  
+  .post("/", zValidator("json", insertCourseSchema), async (c) => {
 
-  const result = await db
-    .insert(coursesTable)
-    .values(course)
-    .returning()
-    .then((res) => res[0]);
+    console.log("Handler reached!"); // Debug log
+    const course = await c.req.valid("json");
+    await createCourse(course); 
+    c.status(201);
+    return c.json({ message: 'User created successfully'});
+  })
 
-  c.status(201);
-  return c.json(result);
-});
+  .get("/:id", async (c) => {
+    const id = Number.parseInt(c.req.param("id"));
+    const courses = await getCourseByID(id);
+    if (!courses || courses.length === 0)
+    {
+      return c.json({ message: "Course not found" }, 404);
+    }
+    return c.json({ courses: courses });
+  })
+
+  .get("/title/:title", async (c) => {
+    const title = c.req.param("title");
+    const course = await getCourseByTitle(title);
+    if (!course)
+    {
+      return c.json({ message: "Course not found" }, 404);
+    }
+    return c.json({ course: course });
+  })    
+
+  .delete("/:id", async (c) => {
+    const id = Number.parseInt(c.req.param("id"));
+    const deleted = await deleteCourseById(id);
+    if (!deleted)
+    {
+      return c.json({ message: "Course not found" }, 404);
+    }
+    return c.json({ message: 'Course deleted successfully' });
+  })
+
+  .delete("/title/:title", async (c) => {
+    const title = c.req.param("title");
+    const deleted = await deleteCourseByTitle(title);;
+    if (!deleted)
+    {
+      return c.json({ message: "Course not found" }, 404);
+    }
+    return c.json({ message: 'Course deleted successfully' });
+  });
+
