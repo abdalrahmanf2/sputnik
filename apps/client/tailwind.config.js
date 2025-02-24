@@ -3,13 +3,22 @@ export default {
     darkMode: ["class"],
     content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
   theme: {
-  	extend: {
+	  extend: {
+		  fontFamily: {
+			  poppins: ["Poppins", "sans-serif"], // Add Poppins as an option
+			  jua: ["Jua", "sans-serif"],
+      },
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
-  		colors: {
+		  colors: {
+			  ReviewGrey: "#898989",
+			  DarkBlue: "#0D356C",
+			  LightBlue: "#6494BC",
+			  BgGrey: "#F6F6F6;",
+			  
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
