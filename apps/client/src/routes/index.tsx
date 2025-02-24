@@ -1,19 +1,19 @@
-import Hero from "@/components/Hero";
-import NavBar from "@/components/NavBar";
-import { createFileRoute } from "@tanstack/react-router";
+import Hero from "@/components/hero";
 import Check from "@/assets/Check.png";
 import Stars from "@/assets/Stars.png";
 import BodyOne from "@/assets/BodyOne.png";
 import BodyTwo from "@/assets/BodyTwo.png";
 import ChatIcon from "@/assets/ChatIcon.png";
+import { createFileRoute } from "@tanstack/react-router";
+import "@/index.css";
+
 export const Route = createFileRoute("/")({
 	component: Index
 });
-import "@/index.css";
+
 function Index() {
 	return (
-		<div>
-			<NavBar />
+		<>
 			<Hero />
 
 			<div className="bg-slate-800 pt-[50vh] pb-[30vh] italic-edge relative">
@@ -129,6 +129,6 @@ function Index() {
 				</div>
 			</div>
 			<div className="h-[100vh] bg-red-500"></div>
-		</div>
+		</>
 	);
 }

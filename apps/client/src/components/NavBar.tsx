@@ -1,11 +1,11 @@
 import SputnikLogo from "@/assets/SputnikLogo.png";
 import Direction from "@/assets/Direction.png";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Link, useLocation } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
-import path from "path";
-import useMobile from "./../../hooks/useMobile";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import useMobile from "../../hooks/useMobile";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import MaxWidthWrapper from "./max-width-wrapper";
 const NAV_LINKS = [
 	{ title: "Home", path: "/" },
 	{ title: "Courses", path: "/courses" },
@@ -13,18 +13,19 @@ const NAV_LINKS = [
 	{ title: "Events", path: "/events" },
 	{ title: "Cart", path: "/cart" }
 ];
-const NavBar = () => {
+const Navbar = () => {
 	const { pathname } = useLocation();
 	const isMobile = useMobile();
-	console.log(pathname);
+
 	return (
-		<div className="flex justify-between items-center px-5 h-[10vh] sticky z-[10]">
-			<img src={SputnikLogo} className="h-28"></img>
+		<MaxWidthWrapper className="flex justify-between items-center sticky z-[10]">
+			<img src={SputnikLogo} className="h-28" />
+
 			{!isMobile ? (
 				<>
 					<nav className="">
 						<ul className="flex shrink">
-							{NAV_LINKS.map((link) => (
+							{NAV_LINKS.map(link => (
 								<li key={link.path}>
 									<Link
 										to={link.path}
@@ -39,7 +40,7 @@ const NavBar = () => {
 							))}
 						</ul>
 					</nav>
-					<div className="flex gap-x-3">
+					<div className="space-x-4">
 						<Link to="/" className={buttonVariants({ variant: "outline" })}>
 							Log In
 						</Link>
@@ -58,7 +59,7 @@ const NavBar = () => {
 							<SheetTitle>Sputnik</SheetTitle>
 						</SheetHeader>
 						<ul className="flex flex-col gap-y-3">
-							{NAV_LINKS.map((link) => (
+							{NAV_LINKS.map(link => (
 								<li key={link.path} className="flex justify-center">
 									<Link
 										to={link.path}
@@ -75,7 +76,7 @@ const NavBar = () => {
 					</SheetContent>
 				</Sheet>
 			)}
-		</div>
+		</MaxWidthWrapper>
 	);
 };
-export default NavBar;
+export default Navbar;
