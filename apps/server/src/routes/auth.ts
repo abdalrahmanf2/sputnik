@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { kindeClient, sessionManager } from "../../kinde";
+import { kindeClient, requireAdmin, sessionManager } from "../../kinde";
 import { getUser } from "../../kinde";
 export const authRoutes = new Hono()
     .get("/login", async (c) => {
@@ -25,4 +25,14 @@ export const authRoutes = new Hono()
    const user=c.var.user
    return c.json({user});
   
-  });
+  })
+  .get("/dashboard", getUser, requireAdmin, async (c) => {
+    return c.json({ message: "Welcome, Admin!" });
+  })
+  //I need to connect db 1st
+  // .get("/courses/:courseId", getUser, checkCourseAccess, async (c) => {
+  //   const courseId = c.req.param("courseId");
+  //   return c.json({ message: `Welcome to course ${courseId}`, user: c.var.user });
+  // });
+
+  
