@@ -7,7 +7,6 @@
   "singleQuote": false,
   "bracketSpacing": true,
   "semi": true,
-  "arrowParens": "avoid",
   "overrides": [
     {
       "files": ["*.json", "*.yml", "*.yaml", "*.toml"],
